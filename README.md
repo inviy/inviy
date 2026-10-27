@@ -13,7 +13,6 @@ I've spent 16 years leading AI and digital-transformation projects. These days I
 | [**evershield**](https://github.com/inviy/evershield) | 웹앱이 브라우저에 흘리는 키, 소스맵, 숨긴 유료 데이터를 배포 전에 찾는 CLI · GitHub Action · MCP 서버<br>Find what your web app leaks to the browser before attackers do | `npx evershield scan ./dist` |
 | [**Hourbell**](https://github.com/inviy/Hourbell) | 16비트 JRPG의 정신을 잇는 브라우저 RPG, 그래픽과 음악을 모두 코드로 생성 | [플레이](https://hourbell.vercel.app) |
 | [**RELAY**](https://github.com/inviy/relay-game) | 단일 HTML 파일 뱀서라이크, 매일 같은 시드로 겨루는 데일리 순위 | [플레이](https://relay-signal.vercel.app) |
-| [**새는돈**](https://github.com/inviy/leak-finder) | 통신비 고지서 캡처로 1년 동안 새는 돈을 찾아 주는 모바일 웹 | [써보기](https://leak-finder-five.vercel.app) |
 
 #### 관심사 / Interests
 
