@@ -1,6 +1,6 @@
 ### inviy
 
-**AI·AX 서비스 빌더.** 업무 문제를 AI로 풀고, 바로 쓸 수 있는 서비스로 만듭니다.
+**AI·AX Service Builder.** 업무 문제를 AI로 풀고, 바로 쓸 수 있는 서비스로 만듭니다.
 
 `Next.js` `TypeScript` `FastAPI` `Python` `Claude API`
 
