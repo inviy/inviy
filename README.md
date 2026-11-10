@@ -1,9 +1,18 @@
 ### inviy
 
-Building the tools I want to use.
+**AI·AX 서비스 빌더.** 업무 문제를 AI로 풀고, 바로 쓸 수 있는 서비스로 만듭니다.
+
+`Next.js` `TypeScript` `FastAPI` `Python` `Claude API`
+
+**AI 서비스**
+
+- **Persona Map** - 뉴스에서 공인 간 관계와 감정을 추출해 그래프로 보여주는 서비스. [Live](https://persona-map.vercel.app)
+- **Passit** - 쌓아 둔 경력에서 JD별 근거를 찾아 자소서·면접 답변을 만드는 AI 커리어 서비스. [Live](https://passit-flame.vercel.app)
+- **Interpreter Assist** - 진료 중 음성에서 숫자·약 이름·용량을 잡아 주는 의료 통역 보조 앱. [Live](https://interpreter-assist.vercel.app)
+
+**AX 도구**
 
 - **[evershield](https://github.com/inviy/evershield)** - Your paywall is probably just CSS. `npx evershield demo`
-- **[Hourbell](https://github.com/inviy/Hourbell)** - A 16-bit JRPG with no asset files. Every sprite and note is code. [Play](https://hourbell.vercel.app)
-- **[RELAY](https://github.com/inviy/relay-game)** - A survivor-like in one HTML file. Same seed for everyone, every day. [Play](https://relay-signal.vercel.app)
+- **Infra Architecture Studio** - 멀티 클라우드·공공·온프레미스 인프라를 설계하고 다이어그램으로 남기는 플랫폼. [Live](https://infra-architecture-studio.vercel.app)
 
-pirasis@gmail.com
+[Blog](https://tech-blog-delta-lovat.vercel.app) · pirasis@gmail.com
