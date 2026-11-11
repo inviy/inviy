@@ -1,6 +1,6 @@
 ### inviy
 
-**AI·AX Service Builder.** 업무 문제를 AI로 풀고, 바로 쓸 수 있는 서비스로 만듭니다.
+**AI PM · AX Service Builder.** 공공·헬스케어·제조 AI 프로젝트를 기획부터 제안, 수행까지 맡고, 바로 쓸 수 있는 서비스로 직접 만듭니다.
 
 `Next.js` `TypeScript` `FastAPI` `Python` `Claude API`
 
@@ -15,4 +15,4 @@
 - **[evershield](https://github.com/inviy/evershield)** - Your paywall is probably just CSS. `npx evershield demo`
 - **Infra Architecture Studio** - 멀티 클라우드·공공·온프레미스 인프라를 설계하고 다이어그램으로 남기는 플랫폼. [Live](https://infra-architecture-studio.vercel.app)
 
-[Blog](https://tech-blog-delta-lovat.vercel.app) · pirasis@gmail.com
+[Blog](https://tech-blog-delta-lovat.vercel.app) · [LinkedIn](https://www.linkedin.com/in/dongwook-lee-%EC%9D%B4%EB%8F%99%EC%9A%B1-782b74263/) · pirasis@gmail.com
