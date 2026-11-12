@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#050910"><title>ASCII Christmas · inviy</title>
+<style>*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050910;color:#9aa7ac;font:12px monospace}canvas{display:block;width:100%;height:100%}nav{position:fixed;bottom:20px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:20px;opacity:.45;transition:opacity .2s}nav:hover,nav:focus-within{opacity:1}button,a{color:inherit;font:inherit;background:none;border:0;text-decoration:none;cursor:pointer;padding:8px}button:focus-visible,a:focus-visible{outline:1px solid #ddc17d}header{position:fixed;top:22px;left:26px;letter-spacing:3px;font-size:10px;color:#75828c;pointer-events:none}@media(max-width:500px){header{left:16px;top:18px}nav{bottom:8px;gap:8px}}</style></head>
+<body><header>INVIY / CHRISTMAS IN ASCII</header><canvas id="scene" role="img" aria-label="문자로 그린 입체 크리스마스트리. 금빛 별과 조명, 빨간 장식, 내리는 눈과 눈밭 반사."></canvas><nav><button id="pause" aria-label="애니메이션 일시정지">PAUSE</button><button id="turn" aria-pressed="true">ROTATION ON</button><button id="full">FULLSCREEN</button><a href="https://github.com/inviy/inviy">SOURCE ↗</a></nav>
+<script>
+'use strict';
+const canvas=document.getElementById('scene'),ctx=canvas.getContext('2d',{alpha:false});
+let seed=1225;const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296},tau=Math.PI*2;
+const pts=[],snow=[],palette=[];
+for(let i=0;i<32;i++){const l=.3+i/31*.7;palette.push('rgb('+Math.round(29*l)+','+Math.round(182*l)+','+Math.round(99*l)+')')}
+for(let i=0;i<16;i++){const l=.3+i/15*.7;palette.push('rgb('+Math.round(255*l)+','+Math.round(201*l)+','+Math.round(90*l)+')')}
+for(let i=0;i<16;i++){const l=.3+i/15*.7;palette.push('rgb('+Math.round(241*l)+','+Math.round(43*l)+','+Math.round(55*l)+')')}
+for(let i=0;i<16;i++){const l=.18+i/15*.6;palette.push('rgb('+Math.round(145*l)+','+Math.round(174*l)+','+Math.round(191*l)+')')}
+function add(x,y,z,c,ch){pts.push([x,y,z,c,ch,rand()*tau])}
+const glyphs='.,:;+=*';
+for(let layer=0;layer<11;layer++){
+ const top=3.1-layer*.35,radius=.16+layer*.145;
+ for(let j=0;j<2600;j++){
+  const u=rand(),a=rand()*tau,r=radius*Math.pow(u,.75)*(1+.055*Math.sin(a*17));
+  add(r*Math.cos(a),top-u*.66,r*Math.sin(a),0,glyphs[Math.floor(rand()*glyphs.length)]);
+ }
+}
+for(let j=0;j<700;j++){const a=rand()*tau;add(.105*Math.cos(a),-.96+rand()*.7,.105*Math.sin(a),1,':')}
+for(let i=0;i<1700;i++){const u=i/1699,a=u*tau*6,r=.13+1.48*u;add(r*Math.cos(a),3.05-u*3.68,r*Math.sin(a),1,i%7===0?'*':'+')}
+for(let i=0;i<58;i++){
+ const u=.14+rand()*.85,a=i*2.39996,r=.14+1.48*u,x=r*Math.cos(a),y=3.04-u*3.65,z=r*Math.sin(a),size=.045+rand()*.045;
+ for(let j=0;j<100;j++){const h=1-2*(j+.5)/100,rr=Math.sqrt(1-h*h),b=j*2.39996;add(x+size*rr*Math.cos(b),y+size*h,z+size*rr*Math.sin(b),i%4===0?1:2,'o')}
+}
+for(let i=0;i<9500;i++){const r=Math.sqrt(rand())*4,a=rand()*tau;add(r*Math.cos(a),-1.01,r*Math.sin(a),3,rand()>.8?':':'.')}
+for(let i=0;i<420;i++)snow.push([rand()*9-4.5,rand()*7-1,rand()*7-3.5,.17+rand()*.35]);
+let W,H,cols,rows,cw,ch,depth,color,chars,paused=false,rotating=true,t=0,last=0,lastDraw=0;
+function resize(){
+ const dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=Math.round(W*dpr);canvas.height=Math.round(H*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+ ch=W<550?7:8;cw=ch*.55;cols=Math.ceil(W/cw);rows=Math.ceil(H/ch);const n=cols*rows;depth=new Float32Array(n);color=new Int16Array(n);chars=new Array(n);ctx.font=ch+'px Consolas,monospace';ctx.textBaseline='top';
+}
+window.addEventListener('resize',resize);resize();
+function draw(){
+ depth.fill(1e9);color.fill(-1);chars.fill(' ');
+ const a=rotating?t*.21:.4,ca=Math.cos(a),sa=Math.sin(a),scale=Math.min(H/5.9,W/5.1),centerY=H*.48;
+ function project(x,y,z){const yy=(y-1)*.983-z*.18,d=z*.983+(y-1)*.18+8,f=8/d;return [Math.round((W*.5+x*scale*f)/cw),Math.round((centerY-yy*scale*f)/ch),d]}
+ function put(x,y,z,c,g,reflection=false){
+  const p=project(x,y,z),xx=p[0],yy=p[1];if(xx<0||xx>=cols||yy<0||yy>=rows)return;
+  const k=yy*cols+xx;if(p[2]>=depth[k])return;
+  depth[k]=p[2];color[k]=c;chars[k]=g;
+ }
+ for(const p of pts){
+  const x=p[0]*ca+p[2]*sa,z=p[2]*ca-p[0]*sa;
+  let level=Math.max(0,Math.min(31,Math.floor((.6-z*.13)*31))),c=level;
+  if(p[3]===1)c=32+Math.floor(9+6*Math.sin(t*1.8+p[5])**2);
+  if(p[3]===2)c=48+Math.max(0,Math.min(15,Math.floor(level/2)));
+  if(p[3]===3)c=64+Math.max(0,Math.min(15,Math.floor(4+rand()*5)));
+  put(x,p[1],z,c,p[4]);
+ }
+ // Faint broken reflection on the snow, then an unobstructed tree pass.
+ for(let i=0;i<pts.length;i+=4){
+  const p=pts[i];if(p[3]===3||p[1]<-.6||rand()>.55)continue;
+  const x=p[0]*ca+p[2]*sa,z=p[2]*ca-p[0]*sa;
+  const pp=project(x+.025*Math.sin(t+z*16),-2.03-p[1]*.25,z),k=pp[1]*cols+pp[0];
+  if(pp[0]>=0&&pp[0]<cols&&pp[1]>=0&&pp[1]<rows){color[k]=p[3]===2?49:p[3]===1?33:3;chars[k]='.'}
+ }
+ for(const p of snow){const y=((p[1]-t*p[3]+30)%7)-1.5;put(p[0]+Math.sin(t*.3+p[1])*.12,y,p[2],68+Math.floor((p[2]+3.5)*1.2),'.')}
+ const star=project(0,3.24,-.15),pulse=.8+Math.sin(t*2)*.2;
+ for(let i=0;i<10;i++){
+  const aa=-Math.PI/2+i*tau/10,bb=aa+tau/10,r=i%2?.065:.15,r2=i%2?.15:.065;
+  for(let j=0;j<16;j++){const u=j/16;put((1-u)*r*Math.cos(aa)+u*r2*Math.cos(bb),3.24-((1-u)*r*Math.sin(aa)+u*r2*Math.sin(bb)),-.3,47,'*')}
+ }
+ ctx.fillStyle='#050910';ctx.fillRect(0,0,W,H);
+ // Draw each palette bucket together to keep animation smooth.
+ for(let c=0;c<palette.length;c++){ctx.fillStyle=palette[c];for(let k=0;k<color.length;k++)if(color[k]===c)ctx.fillText(chars[k],(k%cols)*cw,Math.floor(k/cols)*ch)}
+ const sx=star[0]*cw,sy=star[1]*ch;
+ const glow=ctx.createRadialGradient(sx,sy,0,sx,sy,scale*.27);glow.addColorStop(0,'rgba(255,222,133,'+(.25*pulse)+')');glow.addColorStop(.3,'rgba(248,197,78,.07)');glow.addColorStop(1,'rgba(248,197,78,0)');ctx.fillStyle=glow;ctx.fillRect(sx-scale*.3,sy-scale*.3,scale*.6,scale*.6);
+ ctx.fillStyle='#ffe9a6';ctx.fillText('*',sx,sy);
+ ctx.fillStyle='#a8a08b';ctx.font='10px monospace';ctx.textAlign='center';ctx.fillText('M E R R Y  C H R I S T M A S',W/2,H-76);ctx.textAlign='left';ctx.font=ch+'px Consolas,monospace';
+}
+function tick(now){const dt=last?Math.min((now-last)/1000,.1):0;last=now;if(!paused)t+=dt;if(now-lastDraw>1000/24){draw();lastDraw=now}requestAnimationFrame(tick)}
+document.getElementById('pause').onclick=()=>{paused=!paused;document.getElementById('pause').textContent=paused?'PLAY':'PAUSE';document.getElementById('pause').setAttribute('aria-label',paused?'애니메이션 재생':'애니메이션 일시정지')};
+document.getElementById('turn').onclick=()=>{rotating=!rotating;document.getElementById('turn').textContent='ROTATION '+(rotating?'ON':'OFF');document.getElementById('turn').setAttribute('aria-pressed',String(rotating))};
+document.getElementById('full').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch{}};
+document.addEventListener('visibilitychange',()=>{last=0});
+requestAnimationFrame(tick);
+</script></body></html>
