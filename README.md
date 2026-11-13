@@ -18,5 +18,3 @@
 [Blog](https://tech-blog-delta-lovat.vercel.app) · [LinkedIn](https://www.linkedin.com/in/dongwook-lee-%EC%9D%B4%EB%8F%99%EC%9A%B1-782b74263/) · pirasis@gmail.com
 
 ---
-
-🎄 **[Live ASCII Christmas Tree](https://inviy.github.io/inviy/)** · 회전하는 문자 트리, 반짝이는 조명과 내리는 눈
